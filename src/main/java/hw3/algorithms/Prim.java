@@ -1,11 +1,17 @@
 package hw3.algorithms;
 
 import edu.princeton.cs.algorithms.*;
+import hw3.utils.Metrics;
+import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
 
+@Getter
 public class Prim {
     private static final double FLOATING_POINT_EPSILON = 1.0E-12;
 
+    private Metrics metrics;
     private Edge[] edgeTo;        // edgeTo[v] = shortest edge from tree vertex to non-tree vertex
     private double[] distTo;      // distTo[v] = weight of shortest such edge
     private boolean[] marked;     // marked[v] = true if v on tree, false otherwise
@@ -16,15 +22,33 @@ public class Prim {
      * @param G the edge-weighted graph
      */
     public Prim(EdgeWeightedGraph G) {
+        this.metrics = new Metrics("Prim",G,0.0,new ArrayList<>());
+
         edgeTo = new Edge[G.V()];
         distTo = new double[G.V()];
         marked = new boolean[G.V()];
         pq = new IndexMinPQ<Double>(G.V());
-        for (int v = 0; v < G.V(); v++)
+        for (int v = 0; v < G.V(); v++) {
             distTo[v] = Double.POSITIVE_INFINITY;
-
+            metrics.countOperation(); // initialization
+        }
         for (int v = 0; v < G.V(); v++)      // run from each vertex to find
-            if (!marked[v]) prim(G, v);      // minimum spanning forest
+            if (!marked[v]){      // minimum spanning forest
+                metrics.countOperation(); // component check
+                prim(G, v);
+        }
+
+        // Calculate final weight and edges for metrics
+        double weight = 0.0;
+        List<Edge> mstEdges = new ArrayList<>();
+        for (int v = 0; v < edgeTo.length; v++) {
+            Edge e = edgeTo[v];
+            if (e != null) {
+                mstEdges.add(e);
+                weight += e.weight();
+            }
+        }
+        this.metrics = new Metrics("Prim", G, weight, mstEdges);
 
         // check optimality conditions
         assert check(G);
@@ -32,28 +56,52 @@ public class Prim {
 
     // run Prim's algorithm in graph G, starting from vertex s
     private void prim(EdgeWeightedGraph G, int s) {
+        metrics.countOperation(); // prim call
         distTo[s] = 0.0;
         pq.insert(s, distTo[s]);
+        metrics.countOperation(); // insert operation
+
         while (!pq.isEmpty()) {
+            metrics.countOperation(); // pq check
             int v = pq.delMin();
+            metrics.countOperation(); // delete min
             scan(G, v);
         }
     }
 
     // scan vertex v
     private void scan(EdgeWeightedGraph G, int v) {
+        metrics.countOperation(); // scan call
         marked[v] = true;
+
         for (edu.princeton.cs.algorithms.Edge e : G.adj(v)) {
+            metrics.countOperation(); // edge iteration
             int w = e.other(v);
-            if (marked[w]) continue;         // v-w is obsolete edge
+            metrics.countOperation(); // other call
+
+            if (marked[w]){
+                metrics.countOperation(); // marked check
+                continue;
+            }
+
+            metrics.countOperation(); // weight comparison
             if (e.weight() < distTo[w]) {
                 distTo[w] = e.weight();
                 edgeTo[w] = e;
-                if (pq.contains(w)) pq.decreaseKey(w, distTo[w]);
-                else                pq.insert(w, distTo[w]);
+                metrics.countOperation(); // assignment
+
+                if (pq.contains(w)) {
+                    metrics.countOperation(); // contains check
+                    pq.decreaseKey(w, distTo[w]);
+                    metrics.countOperation(); // decreaseKey
+                } else {
+                    pq.insert(w, distTo[w]);
+                    metrics.countOperation(); // insert
+                }
             }
         }
     }
+
 
     /**
      * Returns the edges in a minimum spanning tree (or forest).

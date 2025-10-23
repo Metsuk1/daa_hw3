@@ -4,12 +4,18 @@ import edu.princeton.cs.algorithms.Edge;
 import edu.princeton.cs.algorithms.EdgeWeightedGraph;
 import edu.princeton.cs.algorithms.Queue;
 import edu.princeton.cs.algorithms.UF;
+import hw3.utils.Metrics;
+import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+@Getter
 public class Kruskal {
     private static final double FLOATING_POINT_EPSILON = 1.0E-12;
 
+    private Metrics metrics;
     private double weight;                        // weight of MST
     private Queue<Edge> mst = new Queue<Edge>();  // edges in MST
 
@@ -18,6 +24,7 @@ public class Kruskal {
      * @param G the edge-weighted graph
      */
     public Kruskal(EdgeWeightedGraph G) {
+        List<Edge> mstEdgesList = new ArrayList<>();
 
         // create array of edges, sorted by weight
         Edge[] edges = new Edge[G.E()];
@@ -29,6 +36,8 @@ public class Kruskal {
 
         // run greedy algorithm
         UF uf = new UF(G.V());
+        weight = 0.0;
+
         for (int i = 0; i < G.E() && mst.size() < G.V() - 1; i++) {
             Edge e = edges[i];
             int v = e.either();
@@ -41,6 +50,8 @@ public class Kruskal {
                 weight += e.weight();
             }
         }
+
+        this.metrics = new Metrics("Kruskal",G,weight,mstEdgesList);
 
         // check optimality conditions
         assert check(G);
@@ -60,7 +71,7 @@ public class Kruskal {
      * @return the sum of the edge weights in a minimum spanning tree (or forest)
      */
     public double weight() {
-        return weight;
+        return metrics.getMstWeight();
     }
 
     // check optimality conditions (takes time proportional to E V lg* V)
