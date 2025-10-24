@@ -9,83 +9,77 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 public class Metrics {
     private long operationCount = 0;
     private long startTime = 0;
+    private long comparisons = 0;
+    private long finds = 0;
+    private long unions = 0;
     private final String algorithmName;
-    private final double mstWeight;
-    private final List<Edge> mstEdges;
-    private final EdgeWeightedGraph graph;
+    private  double mstWeight;
+    private  List<Edge> mstEdges;
+    private  EdgeWeightedGraph graph;
+    private Map<Integer, String> vertexNames;
 
-    public Metrics(String algorithmName, EdgeWeightedGraph graph, double mstWeight, List<Edge> mstEdges) {
+    public Metrics(String algorithmName, EdgeWeightedGraph graph) {
         this.algorithmName = algorithmName;
         this.graph = graph;
-        this.mstWeight = mstWeight;
-        this.mstEdges = mstEdges;
         this.startTime = System.nanoTime();
     }
 
-    public void countOperation() {
-        operationCount++;
+    public void setResults(double mstWeight, List<Edge> mstEdges) {
+        this.mstWeight = mstWeight;
+        this.mstEdges = mstEdges;
     }
 
-    public long getOperationCount() {
-        return operationCount;
+
+    public void countOperation() { operationCount++; }
+    public void countComparison() { comparisons++; }
+    public void countFind() { finds++; }
+    public void countUnion() { unions++; }
+
+
+    public long getOperationCount() { return operationCount; }
+    public long getComparisons() { return comparisons; }
+    public long getFinds() { return finds; }
+    public long getUnions() { return unions; }
+
+    public double getMstWeight() { return mstWeight; }
+    public List<Edge> getMstEdges() { return mstEdges; }
+    public String getAlgorithmName() { return algorithmName; }
+    public int getGraphV() { return graph.V(); }
+    public int getGraphE() { return graph.E(); }
+    public long getExecutionTimeMs() { return (System.nanoTime() - startTime) / 1_000_000; }
+
+    public void setVertexNames(Map<Integer, String> vertexNames) {
+        this.vertexNames = vertexNames;
     }
 
-    public long getExecutionTimeMs() {
-        return (System.nanoTime() - startTime) / 1_000_000;
+    public String name(int index) {
+        return vertexNames.get(index);
     }
 
-    public double getMstWeight() {
-        return mstWeight;
+    // CSV EXPORT
+    public static void createCSVHeader(String filename) throws IOException {
+        try (PrintWriter w = new PrintWriter(new FileWriter(filename, false))) {
+            w.println("timestamp,algorithm,graph_id,dataset,vertices,edges,comparisons,finds,unions,operations,time_ms,mst_weight");
+        }
     }
 
-    public List<Edge> getMstEdges() {
-        return mstEdges;
-    }
+    public void exportToCSVWithGraph(String filename, String datasetName, int graphId) throws IOException {
+        try (var writer = new PrintWriter(new FileWriter(filename, true))) {
+            String ts = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-    public String getAlgorithmName() {
-        return algorithmName;
-    }
-
-    public int getGraphV() {
-        return graph.V();
-    }
-
-    public int getGraphE() {
-        return graph.E();
-    }
-
-    /**
-     * Записывает результаты в CSV файл
-     */
-    public void exportToCSV(String filename) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename, true))) {
-            String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
-            writer.printf("%s,%s,%d,%d,%d,%.5f,%.5f%n",
-                    timestamp,
-                    algorithmName,
-                    getGraphV(),
-                    getGraphE(),
-                    getOperationCount(),
-                    getExecutionTimeMs(),
-                    getMstWeight()
+            writer.printf("%s,%s,%d,%s,%d,%d,%d,%d,%d,%d,%d,%.2f%n",
+                    ts, algorithmName, graphId, datasetName,
+                    getGraphV(), getGraphE(),
+                    comparisons, finds, unions, operationCount,
+                    getExecutionTimeMs(), mstWeight
             );
         }
     }
-
-    /**
-     * Создает CSV заголовок если файл пустой
-     */
-    public static void createCSVHeader(String filename) throws IOException {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(filename, false))) {
-            writer.println("timestamp,algorithm,vertices,edges,operations,time_ms,mst_weight");
-        }
-    }
-
     @Override
     public String toString() {
         return String.format("%s: %.5f (%.0f ops, %.0f ms)",
