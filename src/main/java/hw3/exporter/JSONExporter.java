@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import edu.princeton.cs.algorithms.Edge;
 import hw3.algorithms.Kruskal;
 import hw3.algorithms.Prim;
+import hw3.loader.GraphLoader;
 import hw3.utils.Metrics;
 
 import java.io.File;
@@ -36,14 +37,14 @@ public class JSONExporter {
                     "total_cost", primM.getMstWeight(),
                     "operations_count", primM.getOperationCount(),
                     "execution_time_ms", primM.getExecutionTimeMs(),
-                    "mst_edges", mstEdgesToList(primM)
+                    "mst_edges", mstEdgesToList(primM, graphId)
             ));
 
             entry.put("kruskal", Map.of(
                     "total_cost", kruskalM.getMstWeight(),
                     "operations_count", kruskalM.getOperationCount(),
                     "execution_time_ms", kruskalM.getExecutionTimeMs(),
-                    "mst_edges", mstEdgesToList(kruskalM)
+                    "mst_edges", mstEdgesToList(kruskalM, graphId)
             ));
 
             resultList.add(entry);
@@ -61,14 +62,26 @@ public class JSONExporter {
         }
     }
 
-    private static List<Map<String, Object>> mstEdgesToList(Metrics metrics) {
+    private static List<Map<String, Object>> mstEdgesToList(Metrics metrics, int graphId) {
         List<Map<String, Object>> list = new ArrayList<>();
+        Map<Integer, String> indexToNode = GraphLoader.getIndexToNode(graphId);
+        if (indexToNode == null) {
+            System.err.println("Warning: No indexToNode mapping for graphId " + graphId);
+            return list;
+        }
+
         for (Edge e : metrics.getMstEdges()) {
-            int v = e.either() + 1;
-            int w = e.other(e.either()) + 1;
+            int v = e.either();
+            int w = e.other(e.either());
+            String from = indexToNode.get(v);
+            String to = indexToNode.get(w);
+            if (from == null || to == null) {
+                System.err.println("Warning: No mapping for vertex index " + v + " or " + w + " in graphId " + graphId);
+                continue;
+            }
             list.add(Map.of(
-                    "from", v,
-                    "to", w,
+                    "from", from,
+                    "to", to,
                     "weight", e.weight()
             ));
         }

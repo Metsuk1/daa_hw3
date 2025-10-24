@@ -1,3 +1,3 @@
 timestamp,algorithm,graph_id,dataset,vertices,edges,comparisons,finds,unions,operations,time_ms,mst_weight
-2025-10-24 19:46:51,Prim,1,assign_3_input_medium.json,12,16,0,0,0,181,2,30.00
-2025-10-24 19:46:51,Kruskal,1,assign_3_input_medium.json,12,16,1,11,11,49,2,30.00
+2025-10-24 21:34:41,Prim,1,assign_3_input_medium.json,12,16,0,0,0,181,2,30.00
+2025-10-24 21:34:41,Kruskal,1,assign_3_input_medium.json,12,16,1,11,11,49,2,30.00

@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public class GraphLoader {
+    private static final Map<Integer, Map<Integer, String>> graphIdToIndexMap = new HashMap<>();
+
     public static Map<Integer, EdgeWeightedGraph> loadMultipleGraphs(String filename) throws IOException {
         MultipleGraphData data = readJSON(filename);
         Map<Integer, EdgeWeightedGraph> graphs = new HashMap<>();
@@ -44,21 +46,29 @@ public class GraphLoader {
     }
 
     private static EdgeWeightedGraph buildGraph(GraphData graphData) {
-        Map<String, Integer> indexMap = new HashMap<>();
+        Map<String, Integer> nodeToIndex = new HashMap<>();
+        Map<Integer, String> indexToNode = new HashMap<>();
         for (int i = 0; i < graphData.nodes.size(); i++) {
-            indexMap.put(graphData.nodes.get(i), i);
+            nodeToIndex.put(graphData.nodes.get(i), i);
+            indexToNode.put(i, graphData.nodes.get(i));
         }
+        graphIdToIndexMap.put(graphData.id, indexToNode); // Сохраняем маппинг для каждого графа
 
         EdgeWeightedGraph graph = new EdgeWeightedGraph(graphData.nodes.size());
 
         for (EdgeData edgeData : graphData.edges) {
-            int v = indexMap.get(edgeData.from);
-            int w = indexMap.get(edgeData.to);
+            int v = nodeToIndex.get(edgeData.from);
+            int w = nodeToIndex.get(edgeData.to);
             double cost = edgeData.weight;
             Edge edge = new Edge(v, w, cost);
             graph.addEdge(edge);
         }
 
+        System.out.printf("Loaded graph #%d: %d vertices, %d edges%n", graphData.id, graph.V(), graph.E());
         return graph;
+    }
+
+    public static Map<Integer, String> getIndexToNode(int graphId) {
+        return graphIdToIndexMap.get(graphId);
     }
 }
