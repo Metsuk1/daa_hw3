@@ -2,102 +2,212 @@
   "results" : [ {
     "graph_id" : 1,
     "input_stats" : {
-      "edges" : 5,
-      "vertices" : 4
+      "vertices" : 25,
+      "edges" : 28
     },
     "prim" : {
+      "total_cost" : 46.30000000000001,
+      "execution_time_ms" : 11,
+      "operations_count" : 331,
       "mst_edges" : [ {
-        "from" : 1,
-        "weight" : 1.0,
-        "to" : 2
+        "to" : "V1",
+        "weight" : 1.1,
+        "from" : "V0"
       }, {
-        "from" : 2,
+        "to" : "V2",
+        "weight" : 2.3,
+        "from" : "V0"
+      }, {
+        "to" : "V3",
+        "weight" : 0.9,
+        "from" : "V1"
+      }, {
+        "to" : "V4",
+        "weight" : 1.7,
+        "from" : "V2"
+      }, {
+        "to" : "V5",
+        "weight" : 2.8,
+        "from" : "V3"
+      }, {
+        "to" : "V6",
+        "weight" : 1.4,
+        "from" : "V4"
+      }, {
+        "to" : "V7",
+        "weight" : 3.2,
+        "from" : "V5"
+      }, {
+        "to" : "V8",
+        "weight" : 1.2,
+        "from" : "V6"
+      }, {
+        "to" : "V9",
+        "weight" : 2.5,
+        "from" : "V7"
+      }, {
+        "to" : "V10",
+        "weight" : 1.6,
+        "from" : "V8"
+      }, {
+        "to" : "V11",
+        "weight" : 2.1,
+        "from" : "V9"
+      }, {
+        "to" : "V12",
+        "weight" : 1.8,
+        "from" : "V10"
+      }, {
+        "to" : "V13",
+        "weight" : 2.4,
+        "from" : "V11"
+      }, {
+        "to" : "V14",
+        "weight" : 1.3,
+        "from" : "V12"
+      }, {
+        "to" : "V15",
+        "weight" : 2.9,
+        "from" : "V13"
+      }, {
+        "to" : "V16",
+        "weight" : 1.5,
+        "from" : "V14"
+      }, {
+        "to" : "V17",
+        "weight" : 2.7,
+        "from" : "V15"
+      }, {
+        "to" : "V18",
+        "weight" : 1.9,
+        "from" : "V16"
+      }, {
+        "to" : "V19",
+        "weight" : 2.2,
+        "from" : "V17"
+      }, {
+        "to" : "V20",
+        "weight" : 1.1,
+        "from" : "V18"
+      }, {
+        "to" : "V21",
+        "weight" : 2.6,
+        "from" : "V19"
+      }, {
+        "to" : "V22",
+        "weight" : 1.4,
+        "from" : "V20"
+      }, {
+        "to" : "V23",
         "weight" : 2.0,
-        "to" : 3
+        "from" : "V21"
       }, {
-        "from" : 3,
-        "weight" : 3.0,
-        "to" : 4
-      } ],
-      "operations_count" : 61,
-      "execution_time_ms" : 8,
-      "total_cost" : 6.0
+        "to" : "V24",
+        "weight" : 1.7,
+        "from" : "V22"
+      } ]
     },
     "kruskal" : {
+      "total_cost" : 46.3,
+      "execution_time_ms" : 10,
+      "operations_count" : 102,
       "mst_edges" : [ {
-        "from" : 1,
-        "weight" : 1.0,
-        "to" : 2
+        "to" : "V3",
+        "weight" : 0.9,
+        "from" : "V1"
       }, {
-        "from" : 2,
+        "to" : "V20",
+        "weight" : 1.1,
+        "from" : "V18"
+      }, {
+        "to" : "V1",
+        "weight" : 1.1,
+        "from" : "V0"
+      }, {
+        "to" : "V8",
+        "weight" : 1.2,
+        "from" : "V6"
+      }, {
+        "to" : "V14",
+        "weight" : 1.3,
+        "from" : "V12"
+      }, {
+        "to" : "V22",
+        "weight" : 1.4,
+        "from" : "V20"
+      }, {
+        "to" : "V6",
+        "weight" : 1.4,
+        "from" : "V4"
+      }, {
+        "to" : "V16",
+        "weight" : 1.5,
+        "from" : "V14"
+      }, {
+        "to" : "V10",
+        "weight" : 1.6,
+        "from" : "V8"
+      }, {
+        "to" : "V24",
+        "weight" : 1.7,
+        "from" : "V22"
+      }, {
+        "to" : "V4",
+        "weight" : 1.7,
+        "from" : "V2"
+      }, {
+        "to" : "V12",
+        "weight" : 1.8,
+        "from" : "V10"
+      }, {
+        "to" : "V18",
+        "weight" : 1.9,
+        "from" : "V16"
+      }, {
+        "to" : "V23",
         "weight" : 2.0,
-        "to" : 3
+        "from" : "V21"
       }, {
-        "from" : 3,
-        "weight" : 3.0,
-        "to" : 4
-      } ],
-      "operations_count" : 14,
-      "execution_time_ms" : 7,
-      "total_cost" : 6.0
-    }
-  }, {
-    "graph_id" : 2,
-    "input_stats" : {
-      "edges" : 8,
-      "vertices" : 6
-    },
-    "prim" : {
-      "mst_edges" : [ {
-        "from" : 2,
-        "weight" : 2.0,
-        "to" : 3
+        "to" : "V11",
+        "weight" : 2.1,
+        "from" : "V9"
       }, {
-        "from" : 1,
-        "weight" : 3.0,
-        "to" : 3
+        "to" : "V19",
+        "weight" : 2.2,
+        "from" : "V17"
       }, {
-        "from" : 2,
-        "weight" : 5.0,
-        "to" : 4
+        "to" : "V2",
+        "weight" : 2.3,
+        "from" : "V0"
       }, {
-        "from" : 4,
-        "weight" : 6.0,
-        "to" : 5
+        "to" : "V13",
+        "weight" : 2.4,
+        "from" : "V11"
       }, {
-        "from" : 5,
-        "weight" : 4.0,
-        "to" : 6
-      } ],
-      "operations_count" : 94,
-      "execution_time_ms" : 6,
-      "total_cost" : 20.0
-    },
-    "kruskal" : {
-      "mst_edges" : [ {
-        "from" : 2,
-        "weight" : 2.0,
-        "to" : 3
+        "to" : "V9",
+        "weight" : 2.5,
+        "from" : "V7"
       }, {
-        "from" : 1,
-        "weight" : 3.0,
-        "to" : 3
+        "to" : "V21",
+        "weight" : 2.6,
+        "from" : "V19"
       }, {
-        "from" : 5,
-        "weight" : 4.0,
-        "to" : 6
+        "to" : "V17",
+        "weight" : 2.7,
+        "from" : "V15"
       }, {
-        "from" : 2,
-        "weight" : 5.0,
-        "to" : 4
+        "to" : "V5",
+        "weight" : 2.8,
+        "from" : "V3"
       }, {
-        "from" : 4,
-        "weight" : 6.0,
-        "to" : 5
-      } ],
-      "operations_count" : 25,
-      "execution_time_ms" : 6,
-      "total_cost" : 20.0
+        "to" : "V15",
+        "weight" : 2.9,
+        "from" : "V13"
+      }, {
+        "to" : "V7",
+        "weight" : 3.2,
+        "from" : "V5"
+      } ]
     }
   } ]
 }

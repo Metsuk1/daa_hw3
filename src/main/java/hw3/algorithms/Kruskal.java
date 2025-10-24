@@ -36,10 +36,12 @@ public class Kruskal {
             metrics.countOperation(); // collecting edges
         }
         Arrays.sort(edges);
-        metrics.countComparison();
+        metrics.countOperation();
+        metrics.countComparison((long) (G.E() * (Math.log(G.E()) / Math.log(2))));
 
         // run greedy algorithm
         UF uf = new UF(G.V());
+        metrics.countOperation();
         weight = 0.0;
 
         for (int i = 0; i < G.E() && mst.size() < G.V() - 1; i++) {
@@ -52,6 +54,7 @@ public class Kruskal {
             metrics.countFind();
             // v-w does not create a cycle
             if (uf.find(v) != uf.find(w)) {
+                metrics.countComparison();
                 metrics.countUnion();
                 metrics.countOperation(); // union decision
                 uf.union(v, w);     // merge v and w components

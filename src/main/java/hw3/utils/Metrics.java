@@ -9,7 +9,6 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
 
 public class Metrics {
     private long operationCount = 0;
@@ -21,7 +20,7 @@ public class Metrics {
     private  double mstWeight;
     private  List<Edge> mstEdges;
     private  EdgeWeightedGraph graph;
-    private Map<Integer, String> vertexNames;
+
 
     public Metrics(String algorithmName, EdgeWeightedGraph graph) {
         this.algorithmName = algorithmName;
@@ -37,6 +36,7 @@ public class Metrics {
 
     public void countOperation() { operationCount++; }
     public void countComparison() { comparisons++; }
+    public void countComparison(long n) { comparisons += n; }
     public void countFind() { finds++; }
     public void countUnion() { unions++; }
 
@@ -52,14 +52,6 @@ public class Metrics {
     public int getGraphV() { return graph.V(); }
     public int getGraphE() { return graph.E(); }
     public long getExecutionTimeMs() { return (System.nanoTime() - startTime) / 1_000_000; }
-
-    public void setVertexNames(Map<Integer, String> vertexNames) {
-        this.vertexNames = vertexNames;
-    }
-
-    public String name(int index) {
-        return vertexNames.get(index);
-    }
 
     // CSV EXPORT
     public static void createCSVHeader(String filename) throws IOException {

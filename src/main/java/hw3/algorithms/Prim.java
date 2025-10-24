@@ -82,11 +82,13 @@ public class Prim {
 
             if (marked[w]){
                 metrics.countOperation(); // marked check
+                metrics.countComparison();
                 continue;
             }
 
             metrics.countOperation(); // weight comparison
             if (e.weight() < distTo[w]) {
+                metrics.countComparison();
                 distTo[w] = e.weight();
                 edgeTo[w] = e;
                 metrics.countOperation(); // assignment
