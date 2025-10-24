@@ -24,6 +24,8 @@ public class Kruskal {
      * @param G the edge-weighted graph
      */
     public Kruskal(EdgeWeightedGraph G) {
+        this.metrics = new Metrics("Kruskal", G);
+
         List<Edge> mstEdgesList = new ArrayList<>();
 
         // create array of edges, sorted by weight
@@ -31,27 +33,35 @@ public class Kruskal {
         int t = 0;
         for (Edge e: G.edges()) {
             edges[t++] = e;
+            metrics.countOperation(); // collecting edges
         }
         Arrays.sort(edges);
+        metrics.countComparison();
 
         // run greedy algorithm
         UF uf = new UF(G.V());
         weight = 0.0;
 
         for (int i = 0; i < G.E() && mst.size() < G.V() - 1; i++) {
+            metrics.countOperation(); // loop step
             Edge e = edges[i];
             int v = e.either();
             int w = e.other(v);
+            metrics.countOperation(); // check endpoints
 
+            metrics.countFind();
             // v-w does not create a cycle
             if (uf.find(v) != uf.find(w)) {
+                metrics.countUnion();
+                metrics.countOperation(); // union decision
                 uf.union(v, w);     // merge v and w components
-                mst.enqueue(e);     // add edge e to mst
+                mst.enqueue(e);// add edge e to ms
+                mstEdgesList.add(e);// add edge e to mst
                 weight += e.weight();
             }
         }
 
-        this.metrics = new Metrics("Kruskal",G,weight,mstEdgesList);
+        metrics.setResults(weight, mstEdgesList);
 
         // check optimality conditions
         assert check(G);

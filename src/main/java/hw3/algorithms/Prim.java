@@ -22,12 +22,13 @@ public class Prim {
      * @param G the edge-weighted graph
      */
     public Prim(EdgeWeightedGraph G) {
-        this.metrics = new Metrics("Prim",G,0.0,new ArrayList<>());
+        this.metrics = new Metrics("Prim", G);
 
         edgeTo = new Edge[G.V()];
         distTo = new double[G.V()];
         marked = new boolean[G.V()];
         pq = new IndexMinPQ<Double>(G.V());
+
         for (int v = 0; v < G.V(); v++) {
             distTo[v] = Double.POSITIVE_INFINITY;
             metrics.countOperation(); // initialization
@@ -48,7 +49,7 @@ public class Prim {
                 weight += e.weight();
             }
         }
-        this.metrics = new Metrics("Prim", G, weight, mstEdges);
+        metrics.setResults(weight, mstEdges);
 
         // check optimality conditions
         assert check(G);
