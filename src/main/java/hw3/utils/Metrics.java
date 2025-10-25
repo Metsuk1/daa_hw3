@@ -9,7 +9,9 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
+/**
+ * Tracks performance metrics for MST algorithms.
+ */
 public class Metrics {
     private long operationCount = 0;
     private long startTime = 0;
@@ -21,13 +23,23 @@ public class Metrics {
     private  List<Edge> mstEdges;
     private  EdgeWeightedGraph graph;
 
-
+    /**
+     * Constructs a Metrics object for a given algorithm and graph.
+     *
+     * @param algorithmName Name of the algorithm.
+     * @param graph         Graph being processed.
+     */
     public Metrics(String algorithmName, EdgeWeightedGraph graph) {
         this.algorithmName = algorithmName;
         this.graph = graph;
         this.startTime = System.nanoTime();
     }
-
+    /**
+     * Sets the MST results.
+     *
+     * @param mstWeight Total weight of the MST.
+     * @param mstEdges  List of edges in the MST.
+     */
     public void setResults(double mstWeight, List<Edge> mstEdges) {
         this.mstWeight = mstWeight;
         this.mstEdges = mstEdges;
@@ -59,7 +71,9 @@ public class Metrics {
             w.println("timestamp,algorithm,graph_id,dataset,vertices,edges,comparisons,finds,unions,operations,time_ms,mst_weight");
         }
     }
-
+/**
+ * Exports metrics to a CSV file with graph details.
+ */
     public void exportToCSVWithGraph(String filename, String datasetName, int graphId) throws IOException {
         try (var writer = new PrintWriter(new FileWriter(filename, true))) {
             String ts = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));

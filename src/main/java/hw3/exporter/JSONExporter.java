@@ -14,7 +14,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Exports MST results for Prim and Kruskal algorithms to a JSON file.
+ */
 public class JSONExporter {
+    /**
+     * Exports MST metrics and edge lists to a JSON file.
+     *
+     * @param filename    Name of the output JSON file.
+     * @param primMSTs    Map of graph IDs to Prim MST objects.
+     * @param kruskalMSTs Map of graph IDs to Kruskal MST objects.
+     */
     public static void export(String filename,
                               Map<Integer, Prim> primMSTs,
                               Map<Integer, Kruskal> kruskalMSTs) {
@@ -61,7 +71,13 @@ public class JSONExporter {
             System.err.println("Failed to export JSON: " + e.getMessage());
         }
     }
-
+    /**
+     * Converts MST edges to a list of maps with node labels and weights.
+     *
+     * @param metrics Metrics object containing MST edges.
+     * @param graphId ID of the graph.
+     * @return List of edge data maps.
+     */
     private static List<Map<String, Object>> mstEdgesToList(Metrics metrics, int graphId) {
         List<Map<String, Object>> list = new ArrayList<>();
         Map<Integer, String> indexToNode = GraphLoader.getIndexToNode(graphId);
