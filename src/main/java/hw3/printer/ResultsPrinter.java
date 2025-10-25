@@ -6,7 +6,9 @@ import hw3.algorithms.Prim;
 import hw3.utils.Metrics;
 
 import java.util.Map;
-
+/**
+ * Prints detailed MST results for Prim and Kruskal algorithms.
+ */
 public class ResultsPrinter {
     private final Map<Integer, EdgeWeightedGraph> graphs;
     private final Map<Integer, Prim> primMSTs;
@@ -19,7 +21,9 @@ public class ResultsPrinter {
         this.primMSTs = primMSTs;
         this.kruskalMSTs = kruskalMSTs;
     }
-
+    /**
+     * Prints detailed MST results for all graphs.
+     */
     public void print() {
         System.out.println("\nDETAILED MST RESULTS");
         System.out.println("=".repeat(60));
@@ -44,7 +48,11 @@ public class ResultsPrinter {
             System.out.println("=".repeat(60));
         }
     }
-
+    /**
+     * Prints MST details for a given algorithm.
+     *
+     * @param mstObj Prim or Kruskal object.
+     */
     private void printMST(Object mstObj) {
         Metrics metrics = (mstObj instanceof Prim)
                 ? ((Prim) mstObj).getMetrics()
@@ -61,7 +69,12 @@ public class ResultsPrinter {
             System.out.printf("    District %d — District %d (cost %.2f)%n", v, w, e.weight());
         });
     }
-
+    /**
+     * Prints a comparison of Prim and Kruskal metrics.
+     *
+     * @param prim    Metrics for Prim algorithm.
+     * @param kruskal Metrics for Kruskal algorithm.
+     */
     private void printComparison(Metrics prim, Metrics kruskal) {
         System.out.println("\nComparison:");
         System.out.println("----------");

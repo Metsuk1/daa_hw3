@@ -3,7 +3,9 @@ package hw3.solver;
 import edu.princeton.cs.algorithms.EdgeWeightedGraph;
 import hw3.algorithms.Kruskal;
 import hw3.algorithms.Prim;
-
+/**
+ * Solves the MST problem using both Prim and Kruskal algorithms.
+ */
 public class MSTSolver {
     private final Prim primMST;
     private final Kruskal kruskalMST;

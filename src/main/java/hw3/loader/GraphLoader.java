@@ -10,10 +10,18 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * Loads graph data from JSON files into EdgeWeightedGraph objects.
+ */
 public class GraphLoader {
     private static final Map<Integer, Map<Integer, String>> graphIdToIndexMap = new HashMap<>();
-
+    /**
+     * Loads multiple graphs from a JSON file.
+     *
+     * @param filename Name of the JSON file.
+     * @return Map of graph IDs to EdgeWeightedGraph objects.
+     * @throws IOException If file loading fails.
+     */
     public static Map<Integer, EdgeWeightedGraph> loadMultipleGraphs(String filename) throws IOException {
         MultipleGraphData data = readJSON(filename);
         Map<Integer, EdgeWeightedGraph> graphs = new HashMap<>();
@@ -32,7 +40,13 @@ public class GraphLoader {
         }
         return buildGraph(data.graphs[0]);
     }
-
+    /**
+     * Reads JSON data from a file.
+     *
+     * @param filename Name of the JSON file.
+     * @return MultipleGraphData object.
+     * @throws IOException If file reading fails.
+     */
     private static MultipleGraphData readJSON(String filename) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -67,7 +81,12 @@ public class GraphLoader {
         System.out.printf("Loaded graph #%d: %d vertices, %d edges%n", graphData.id, graph.V(), graph.E());
         return graph;
     }
-
+    /**
+     * Retrieves the index-to-node mapping for a given graph ID.
+     *
+     * @param graphId ID of the graph.
+     * @return Map of indices to node labels.
+     */
     public static Map<Integer, String> getIndexToNode(int graphId) {
         return graphIdToIndexMap.get(graphId);
     }
